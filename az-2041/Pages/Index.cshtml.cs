@@ -15,11 +15,17 @@ namespace az_2041.Pages
         //}
 
         public List<Product> products;
-        ProductService ProductService= new ProductService();
+        private readonly IProductService _productService;
+
+        public IndexModel(IProductService productService)
+        {
+           
+            _productService = productService;
+        }
 
         public void OnGet()
         {
-            products = ProductService.GetProducts();
+            products = _productService.GetProducts();
         }
     }
 }

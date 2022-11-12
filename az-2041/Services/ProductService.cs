@@ -3,20 +3,28 @@ using Microsoft.Data.SqlClient;
 
 namespace az_2041.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private static string db_source = "az2042.database.windows.net";
-        private static string db_user = "AZ204vm";
-        private static string db_password = "YS0pWZgEF1o5";
-        private static string db_database = "az-2042";
+        //private static string db_source = "az2042.database.windows.net";
+        //private static string db_user = "AZ204vm";
+        //private static string db_password = "YS0pWZgEF1o5";
+        //private static string db_database = "az-2042";
+
+        private IConfiguration _configuration;
+
+        public ProductService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         private SqlConnection GetConnection()
         {
-            SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
-            sqlConnectionStringBuilder.DataSource = db_source;
-            sqlConnectionStringBuilder.UserID = db_user;
-            sqlConnectionStringBuilder.Password = db_password;
-            sqlConnectionStringBuilder.InitialCatalog=db_database;
-            return new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
+            //SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
+            //sqlConnectionStringBuilder.DataSource = db_source;
+            //sqlConnectionStringBuilder.UserID = db_user;
+            //sqlConnectionStringBuilder.Password = db_password;
+            //sqlConnectionStringBuilder.InitialCatalog=db_database;
+            return new SqlConnection(_configuration.GetConnectionString("SQLConnection"));
         }
 
         public List<Product> GetProducts()
