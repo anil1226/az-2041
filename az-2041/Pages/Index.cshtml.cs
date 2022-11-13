@@ -15,6 +15,8 @@ namespace az_2041.Pages
         //}
 
         public List<Product> products;
+        public bool isBeta;
+
         private readonly IProductService _productService;
 
         public IndexModel(IProductService productService)
@@ -25,6 +27,7 @@ namespace az_2041.Pages
 
         public void OnGet()
         {
+            isBeta = _productService.isBeta().Result;
             products = _productService.GetProducts();
         }
     }

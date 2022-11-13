@@ -1,5 +1,6 @@
 ﻿using az_2041.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.FeatureManagement;
 
 namespace az_2041.Services
 {
@@ -11,10 +12,22 @@ namespace az_2041.Services
         //private static string db_database = "az-2042";
 
         private IConfiguration _configuration;
+        private readonly IFeatureManager _featureManager;
 
-        public ProductService(IConfiguration configuration)
+        public ProductService(IConfiguration configuration,IFeatureManager featureManager)
         {
             _configuration = configuration;
+            _featureManager = featureManager;
+        }
+
+        public async Task<bool> isBeta()
+        {
+            if(await _featureManager.IsEnabledAsync("beta"))
+            {
+                return true;
+            }
+            else
+                return false;
         }
 
         private SqlConnection GetConnection()
@@ -24,7 +37,7 @@ namespace az_2041.Services
             //sqlConnectionStringBuilder.UserID = db_user;
             //sqlConnectionStringBuilder.Password = db_password;
             //sqlConnectionStringBuilder.InitialCatalog=db_database;
-            return new SqlConnection(_configuration.GetConnectionString("SQLConnection"));
+            return new SqlConnection(_configuration["SQLConnection"]);
         }
 
         public List<Product> GetProducts()
